@@ -112,9 +112,11 @@ async function copyRecursive(src, dest, options = {}) {
         if (backup) {
           await fs.copy(destPath, `${destPath}.backup`);
         }
+        skipped.push(destPath);
+      } else {
+        await fs.copy(srcPath, destPath);
+        installed.push(destPath);
       }
-      await fs.copy(srcPath, destPath);
-      installed.push(destPath);
     }
   }
 
@@ -286,4 +288,51 @@ async function cleanupEmptyDirs(claudeDir, selectedComponents) {
       await cleanupEmptySubDirs(targetPath);
     }
   }
+}
+
+/**
+ * 检查组件安装状态
+ */
+export async function checkStatus() {
+  const claudeDir = getClaudeDir();
+  const status = {};
+
+  for (const [componentKey, component] of Object.entries(COMPONENTS)) {
+    const targetPath = path.join(claudeDir, component.target);
+    const fileCount = await countFiles(targetPath, component.recursive);
+
+    status[componentKey] = {
+      installed: fileCount > 0,
+      path: targetPath,
+      fileCount
+    };
+  }
+
+  return status;
+}
+
+/**
+ * 统计目录内文件数量
+ */
+async function countFiles(dirPath, recursive = false) {
+  if (!await fs.pathExists(dirPath)) return 0;
+
+  let count = 0;
+  const items = await fs.readdir(dirPath);
+
+  for (const item of items) {
+    const itemPath = path.join(dirPath, item);
+    const stats = await fs.stat(itemPath);
+
+    if (stats.isFile()) {
+      count += 1;
+      continue;
+    }
+
+    if (stats.isDirectory() && recursive) {
+      count += await countFiles(itemPath, true);
+    }
+  }
+
+  return count;
 }

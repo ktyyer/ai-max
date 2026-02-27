@@ -104,6 +104,30 @@ export const COMPONENTS = {
     target: 'skills',
     pattern: '**/*',
     recursive: true
+  },
+  plugins: {
+    name: 'Plugins（插件）',
+    description: '内置插件和框架插件（auto-core, superpowers, adaptive-evolution 等）',
+    source: 'plugins',
+    target: 'plugins',
+    pattern: '**/*',
+    recursive: true
+  },
+  templates: {
+    name: 'Templates（模板）',
+    description: 'CI 门禁、项目配置等可复用模板',
+    source: 'templates',
+    target: 'templates',
+    pattern: '**/*',
+    recursive: true
+  },
+  lib: {
+    name: 'Lib（核心库）',
+    description: 'Axiom 检测等核心库文件',
+    source: 'lib',
+    target: 'lib',
+    pattern: '**/*',
+    recursive: true
   }
 };
 

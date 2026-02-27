@@ -50,7 +50,8 @@ describe('utils.js', () => {
   describe('getPackageVersion', () => {
     it('should return version string from package.json', () => {
       const result = getPackageVersion();
-      expect(result).toBe('0.0.1');
+      const expectedVersion = fs.readJsonSync(path.join(process.cwd(), 'package.json')).version;
+      expect(result).toBe(expectedVersion);
     });
   });
 
@@ -92,8 +93,38 @@ describe('utils.js', () => {
       });
     });
 
-    it('should have exactly 4 components', () => {
-      expect(Object.keys(COMPONENTS)).toHaveLength(4);
+    it('should have plugins component with correct structure', () => {
+      expect(COMPONENTS.plugins).toMatchObject({
+        name: 'Plugins（插件）',
+        source: 'plugins',
+        target: 'plugins',
+        pattern: '**/*',
+        recursive: true
+      });
+    });
+
+    it('should have templates component with correct structure', () => {
+      expect(COMPONENTS.templates).toMatchObject({
+        name: 'Templates（模板）',
+        source: 'templates',
+        target: 'templates',
+        pattern: '**/*',
+        recursive: true
+      });
+    });
+
+    it('should have lib component with correct structure', () => {
+      expect(COMPONENTS.lib).toMatchObject({
+        name: 'Lib（核心库）',
+        source: 'lib',
+        target: 'lib',
+        pattern: '**/*',
+        recursive: true
+      });
+    });
+
+    it('should have exactly 7 components', () => {
+      expect(Object.keys(COMPONENTS)).toHaveLength(7);
     });
   });
 

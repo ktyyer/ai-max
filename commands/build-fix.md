@@ -1,3 +1,7 @@
+---
+description: 修复构建和 TypeScript 错误
+---
+
 # 构建与修复
 
 增量修复 TypeScript 和构建错误：

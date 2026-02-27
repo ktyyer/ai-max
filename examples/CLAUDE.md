@@ -91,6 +91,8 @@ DEBUG=false
 - `/aimax:plan` - 创建实现计划
 - `/aimax:code-review` - 审查代码质量
 - `/aimax:build-fix` - 修复构建错误
+- `/aimax:loop` - 状态机分步编排与中断恢复
+- `/aimax:evolve` - 持续迭代优化与回归门禁
 
 ## Git 工作流
 

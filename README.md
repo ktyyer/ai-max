@@ -32,40 +32,118 @@ CLI 提供交互式界面，让你选择要安装的组件：
 
 ## 斜杠指令使用指南
 
-安装 AI MAX 后，你可以在 Claude Code 中使用以下斜杠指令。只需输入 `/aimax:指令名` 加上你的需求即可。
+安装 AI MAX 后，你可以在 Claude Code 中使用以下斜杠指令。
 
-### 快速参考
+### 🚀 超级命令（推荐）
 
 | 指令 | 用途 | 示例 |
 |------|------|------|
-| `/aimax:auto` | 智能选择最合适的指令 | `/aimax:auto 帮我修复这个 bug` |
-| `/aimax:plan` | 功能规划与实现方案 | `/aimax:plan 添加用户登录功能` |
-| `/aimax:tdd` | 测试驱动开发 | `/aimax:tdd 实现购物车功能` |
-| `/aimax:code-review` | 代码质量与安全审查 | `/aimax:code-review` |
-| `/aimax:build-fix` | 修复构建/类型错误 | `/aimax:build-fix` |
-| `/aimax:e2e` | 端到端测试生成 | `/aimax:e2e 测试用户注册流程` |
-| `/aimax:test-coverage` | 测试覆盖率分析 | `/aimax:test-coverage` |
-| `/aimax:refactor-clean` | 代码重构与清理 | `/aimax:refactor-clean 优化这个模块` |
-| `/aimax:update-docs` | 更新项目文档 | `/aimax:update-docs` |
-| `/aimax:update-codemaps` | 更新代码架构图 | `/aimax:update-codemaps` |
+| `/aimax:auto` | **智能超级命令** - 一站式完成需求分析、规划、编码、测试、审查全流程 | `/aimax:auto 用 Spring Boot 实现用户搜索 API` |
+
+**一个命令搞定一切**：`/aimax:auto` 会自动检测项目上下文、评估任务复杂度、选择最佳策略、完成编码测试审查。
+
+```
+/aimax:auto 实现用户登录功能
+↓ 自动完成
+1. 检测项目上下文（语言、框架）
+2. 评估复杂度（简单/中等/复杂）
+3. 自动规划（复杂任务）
+4. TDD 开发（先写测试）
+5. 自动化门禁（构建、测试、覆盖率）
+6. 代码审查（安全、质量）
+7. 完成！
+```
+
+---
+
+### 📦 单个命令（精细控制）
+
+如果你需要精细控制某个环节，可以使用单个命令：
+
+| 指令 | 用途 | 何时使用 |
+|------|------|---------|
+| `/aimax:plan` | 功能规划与实现方案 | 只需要设计方案 |
+| `/aimax:tdd` | 测试驱动开发 | 已有明确方案，需要 TDD |
+| `/aimax:code-review` | 代码质量与安全审查 | 代码已写好，需要审查 |
+| `/aimax:build-fix` | 修复构建/类型错误 | 构建失败时 |
+| `/aimax:e2e` | 端到端测试生成 | 需要端到端测试 |
+| `/aimax:test-coverage` | 测试覆盖率分析 | 检查测试覆盖 |
+| `/aimax:loop` | 状态机分步编排 | 需要中断恢复和可控重试 |
+| `/aimax:evolve` | 持续迭代与回归门禁 | 需要评估驱动优化 |
+| `/aimax:deep-plan` | 深度两阶段规划 | 复杂重构或架构迁移 |
+| `/aimax:security-scan` | 安全审计扫描 | 检查配置和代码安全 |
+| `/aimax:instinct-status` | 查看已学习的编码模式 | 查看 AI 学习进度 |
+| `/aimax:refactor-clean` | 代码重构与清理 | 代码需要优化 |
+| `/aimax:update-docs` | 更新项目文档 | 文档需要同步 |
+| `/aimax:update-codemaps` | 更新代码架构图 | 架构图需要更新 |
 
 ---
 
 ### 详细说明
 
-#### `/aimax:auto` - 智能指令选择器
+#### `/aimax:auto` - 智能超级命令
 
-不确定用哪个指令？使用 `/aimax:auto`，它会根据你的描述自动选择最合适的指令。
+**一个命令，自动完成所有事情**。输入你的需求，它会自动：
+
+1. **项目检测** - 自动识别语言、框架、加载插件
+2. **复杂度评估** - 智能判断任务复杂度（简单/中等/复杂）
+3. **插件调度** - 根据任务关键词自动调用八大插件
+4. **TDD 开发** - 先写测试，再写代码
+5. **自动化门禁** - 构建通过、测试通过、覆盖率达标
+6. **代码审查** - 安全检查、质量检查
+7. **知识更新** - 更新项目记忆（如有 Axiom）
+
+**八大内置插件自动调度**：
+
+| 插件 | 触发关键词 | 能力 |
+|------|-----------|------|
+| **Superpowers** | 功能、特性、模块、实现 | TDD 流程 + 系统化调试 |
+| **Frontend Design** | 组件、界面、UI、页面 | 字体、间距、配色规范 |
+| **Code Simplifier** | 清理、优化、重构、简化 | 提取常量、消除重复 |
+| **Playground** | 可视化、工具、演示、看板 | HTML 工具生成 |
+| **Chrome Automation** | 浏览器、网页、抓取、爬虫 | Playwright 自动化 |
+| **PR Review Toolkit** | 审查、review、检查、PR | 多维度代码审查 |
+| **Adaptive Evolution** | 迭代、演进、评估、基准、回归、CI | 评估门禁 + 回归防护闭环 |
+| **Task State Machine** | 状态机、分步执行、中断恢复、重试、编排 | 任务分解 + 检查点恢复 |
+| **Focus Chain** | 长任务、多步骤、保持专注、任务跟踪 | 任务焦点保持 + 偏离检测 |
+| **Continuous Learning** | 学习、模式、习惯、instinct | 自动学习用户编码模式 |
 
 ```
-/aimax:auto 我的构建失败了，有类型错误
-→ 自动选择 /aimax:build-fix
+# 简单任务 - 直接实现
+/aimax:auto 修复登录按钮样式问题
+→ 🟢 简单（5分钟）→ 直接修复
 
-/aimax:auto 帮我写个新功能
-→ 自动选择 /aimax:plan
+# 中等任务 - TDD + 审查
+/aimax:auto 用 Spring Boot 实现用户搜索 API
+→ 🟡 中等（45分钟）→ TDD + 审查
 
-/aimax:auto 检查一下代码有没有安全问题
-→ 自动选择 /aimax:code-review
+# 复杂任务 - 完整流程
+/aimax:auto 实现用户认证系统
+→ 🔴 复杂（2-3小时）→ 规划 + TDD + 审查 + 知识更新
+
+# 前端组件 - 自动应用视觉规范
+/aimax:auto 写一个登录表单组件
+→ Frontend Design 插件 → 字体、间距、配色规范
+
+# 代码审查 - 多维度检查
+/aimax:auto 审查最近改动的代码
+→ PR Review Toolkit → 测试、安全、质量、性能审查
+
+# 自主演进 - 持续优化闭环
+/aimax:auto 对支付模块做持续迭代优化并建立回归防护
+→ Adaptive Evolution → 基线评估、门禁判定、失败恢复
+
+# 状态机编排 - 中断可恢复
+/aimax:auto 用状态机方式执行跨模块重构并可恢复
+→ Task State Machine → 分步执行、检查点、恢复执行
+
+# 深度规划 - 复杂架构重构
+/aimax:auto 将订单系统拆分为微服务
+→ Deep Plan → 两阶段规划（探索+执行）
+
+# 安全审计 - 配置和代码安全
+/aimax:auto 检查项目的安全漏洞
+→ Security Scan → 密钥泄露、注入、配置审计
 ```
 
 #### `/aimax:plan` - 实现规划
@@ -135,6 +213,36 @@ AI 会分析需求、识别风险、创建分步计划，**并等待你确认后
 /aimax:test-coverage
 ```
 
+#### `/aimax:loop` - 状态机分步编排
+
+将复杂任务映射为可恢复状态机（INTAKE/CONTEXT/DECOMPOSE/EXECUTE/VERIFY/RECOVER），每步写检查点并支持恢复执行。
+
+```
+/aimax:loop 对订单结算链路做分步优化，支持中断恢复
+```
+
+也可以用终端执行器直接维护状态快照：
+
+```bash
+aimax loop init --task "重构订单结算" --steps "分析,重构,验证"
+aimax loop status
+aimax loop next --verify pass
+aimax loop resume
+```
+
+#### `/aimax:evolve` - 自主演进闭环
+
+以“评估驱动”的方式持续优化项目，适用于跨迭代提升质量和性能。核心流程：
+- 建立基线（测试/覆盖率/性能）
+- 生成最小补丁（可回滚）
+- 执行门禁（构建、测试、审查、可选 LLM eval）
+- PR 自动评估摘要（门禁结果自动回写评论）
+- 失败恢复（最多 3 轮）
+
+```
+/aimax:evolve 对支付模块做持续优化，目标是 P95 降低 20%
+```
+
 #### `/aimax:refactor-clean` - 重构清理
 
 移除死代码、优化结构、消除重复。
@@ -163,10 +271,14 @@ AI 会分析需求、识别风险、创建分步计划，**并等待你确认后
 
 ```
 1. /aimax:plan        → 规划功能
-2. /aimax:tdd         → 测试驱动实现
-3. /aimax:code-review → 审查代码
-4. /aimax:build-fix   → 修复构建问题（如有）
-5. git commit         → 提交代码
+2. /aimax:deep-plan   → 复杂任务深度规划
+3. /aimax:loop        → 状态机编排与可恢复执行
+4. /aimax:tdd         → 测试驱动实现
+5. /aimax:code-review → 审查代码
+6. /aimax:security-scan → 安全审计
+7. /aimax:evolve      → 建立门禁并持续优化
+8. /aimax:build-fix   → 修复构建问题（如有）
+9. git commit         → 提交代码
 ```
 
 ---
@@ -277,8 +389,13 @@ aimax/
 |   |-- clickhouse-io.md            # ClickHouse 分析
 |
 |-- commands/         # 用于快速执行的斜杠命令
+|   |-- auto.md              # /aimax:auto - 智能超级命令
 |   |-- tdd.md              # /aimax:tdd - 测试驱动开发
 |   |-- plan.md             # /aimax:plan - 实现规划
+|   |-- loop.md             # /aimax:loop - 状态机分步编排
+|   |-- deep-plan.md        # /aimax:deep-plan - 深度两阶段规划
+|   |-- security-scan.md    # /aimax:security-scan - 安全审计扫描
+|   |-- evolve.md           # /aimax:evolve - 自主演进闭环
 |   |-- e2e.md              # /aimax:e2e - E2E 测试生成
 |   |-- code-review.md      # /aimax:code-review - 质量审查
 |   |-- build-fix.md        # /aimax:build-fix - 修复构建错误
@@ -286,6 +403,25 @@ aimax/
 |   |-- test-coverage.md    # /aimax:test-coverage - 覆盖率分析
 |   |-- update-codemaps.md  # /aimax:update-codemaps - 刷新文档
 |   |-- update-docs.md      # /aimax:update-docs - 同步文档
+|
+|-- plugins/          # 插件系统
+|   |-- builtin/             # 内置插件（八大插件）
+|   |   |-- auto-core.md          # 自动路由核心
+|   |   |-- superpowers.md        # TDD + 系统化调试
+|   |   |-- frontend-design.md    # 前端视觉设计
+|   |   |-- code-simplifier.md    # 代码清理
+|   |   |-- playground.md         # HTML 工具生成
+|   |   |-- chrome-automation.md  # 浏览器自动化
+|   |   |-- pr-review-toolkit.md  # 代码审查
+|   |   |-- adaptive-evolution.md # 自主演进闭环
+|   |   |-- task-state-machine.md # 分步编排 + 中断恢复
+|   |   |-- focus-chain.md       # 任务焦点保持
+|   |   |-- tdd-templates.md      # 多语言测试模板
+|   |-- framework/           # 框架插件
+|   |   |-- java/
+|   |   |   |-- spring.md         # Spring Boot 规范
+|   |   |-- javascript/
+|   |       |-- react.md          # React 组件规范
 |
 |-- rules/            # 必须遵循的准则
 |   |-- security.md         # 强制性安全检查
@@ -303,8 +439,15 @@ aimax/
 |-- mcp-configs/      # MCP 服务器配置
 |   |-- mcp-servers.json    # GitHub、Supabase、Vercel、Railway 等
 |
-|-- plugins/          # 插件生态系统文档
-|   |-- README.md           # 插件、市场、技能指南
+|-- lib/              # 核心库
+|   |-- axiom-detector.md   # Axiom 集成检测
+|
+|-- templates/        # 可复用模板
+|   |-- project-config/      # 项目 CLAUDE.md 模板
+|   |   |-- aimax-loop-state-template.json # 状态机检查点模板
+|   |-- ci/
+|       |-- aimax-evolution-gates.yml # 持续迭代门禁模板
+|       |-- aimax-pr-eval-comment.yml # PR 自动评估注释模板
 |
 |-- examples/         # 示例配置
     |-- CLAUDE.md           # 项目级配置示例
