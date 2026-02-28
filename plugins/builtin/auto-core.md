@@ -1,325 +1,198 @@
 ---
 name: auto-core
-version: 2.0.0
-description: 智能路由核心 - 集成 Axiom + Agent + 插件系统
+version: 3.0.0
+description: 智能路由大脑 - 统一路由协议、会话初始化、能力链、自动经验沉淀
 author: ai-max
 priority: 100
 builtin: true
 ---
 
-# 智能路由核心 (auto-core)
+# 智能路由大脑 (auto-core v3.0)
 
-> ai-max 的核心路由引擎，集成 Axiom 长期记忆、Agent 系统和插件系统
+> `/aimax:auto` 的核心路由引擎：一个大脑，统一调度所有能力
 
-## 核心能力
+---
 
-### 1. Axiom 集成
-
-```markdown
-## Axiom 能力检测
-
-在执行任务前，检查是否存在 Axiom：
-
-```bash
-# 检查 .agent/ 目录
-if (存在 .agent/workflows/start.md) {
-    ✅ 项目有 Axiom
-    → 可以调用 /start
-    → 可以读取 .agent/memory/project_decisions.md
-    → 可以使用知识进化 /evolve
-} else {
-    ❌ 项目无 Axiom
-    → 仅使用 /aimax:auto + Agent 系统
-}
-```
-
-## 在执行任何任务前读取 Axiom 记忆
-
-if (存在 .agent/memory/project_decisions.md) {
-    读取架构决策
-    读取编码规范
-    读取项目模式
-}
-
-# 确保 /aimax:auto 生成的代码符合项目既定规范
-```
-
-### 2. 任务复杂度评估
-
-| 级别 | 预估时间 | 处理方式 |
-|------|---------|---------|
-| 🟢 简单 | < 30 分钟 | 直接实现 + 语言规范 |
-| 🟡 中等 | 30-120 分钟 | TDD Agent + 代码审查 |
-| 🔴 复杂 | > 120 分钟 | 检测 Axiom → 建议 /start 或 Planner Agent |
-
-#### 复杂度评估维度
-
-1. **关键词分析**
-   - 简单：函数、方法、变量、修复、添加
-   - 中等：模块、组件、接口、服务、API
-   - 复杂：系统、架构、集成、重构、迁移、演进、评估、基准
-
-2. **文件数量预估**
-   - 简单：单文件修改
-   - 中等：2-5 个文件
-   - 复杂：>5 个文件或跨模块
-
-3. **依赖复杂度**
-   - 无外部依赖 → 保持原级别
-   - 有外部 API 调用 → 提升一级
-   - 有数据库变更 → 提升一级
-
-4. **业务逻辑**
-   - CRUD 操作 → 保持原级别
-   - 有业务规则 → 提升一级
-   - 有复杂算法 → 提升一级
-
-5. **演进任务信号**
-   - 包含“迭代、演进、回归、持续优化、CI” → 额外加载 `adaptive-evolution` 插件
-
-6. **状态机任务信号**
-   - 包含“状态机、分步执行、中断恢复、重试、编排” → 额外加载 `task-state-machine` 插件
-
-7. **深度规划信号**
-   - 包含“重构、迁移、拆分、微服务、架构重设计” → 建议使用 `/aimax:deep-plan`
-
-8. **安全审计信号**
-   - 包含“安全、审计、漏洞、扫描、密钥、注入” → 额外加载安全扫描
-
-9. **焦点保持信号**
-   - 复杂度 >= 中等时自动激活 `focus-chain` 插件
-
-10. **持续学习信号**
-    - 包含“学习、模式、习惯、instinct” → 加载 continuous-learning 技能
-
-### 3. 插件自动发现
-
-```markdown
-## 插件扫描规则
-
-### 扫描目录
-
-1. `plugins/builtin/` - 内置插件（始终加载）
-2. `plugins/framework/` - 框架插件（按需加载）
-
-### 插件匹配逻辑
-
-```bash
-# 1. 检测项目语言/框架
-language = detect_language()  # js, python, java, go
-framework = detect_framework() # react, spring, django, gin
-
-# 2. 加载匹配插件
-plugins = []
-plugins += load_builtin_plugins()
-plugins += load_framework_plugins(language, framework)
-
-# 3. 根据关键词匹配
-for plugin in plugins:
-    if any(keyword in user_input for keyword in plugin.triggers):
-        load_plugin(plugin)
-```
-
-### 插件优先级
-
-- 优先级范围：0-100（越高越优先）
-- 内置插件：100
-- 框架插件：50
-- 用户插件：0-49
-```
-
-### 4. Agent 自动调度
-
-```markdown
-## Agent 调度规则
-
-### 按任务类型调度
-
-| 任务类型 | 调度 Agent |
-|---------|-----------|
-| 新功能开发 | planner → tdd-guide → code-reviewer |
-| Bug 修复 | tdd-guide → code-reviewer |
-| 代码重构 | refactor-cleaner → code-reviewer |
-| 架构设计 | architect → planner |
-| 安全审查 | security-reviewer |
-| 文档更新 | doc-updater |
-| E2E 测试 | e2e-runner |
-| 构建错误 | build-error-resolver |
-
-### 按复杂度调度
-
-| 复杂度 | 调度策略 |
-|--------|---------|
-| 简单 | 直接执行，无需 Agent |
-| 中等 | 单 Agent 协助 |
-| 复杂（有 Axiom） | **建议 /start（Axiom 工作流）** |
-| 复杂（无 Axiom） | planner → 多 Agent 协作 |
-```
-
-## 完整路由流程
+## 🚀 步骤0：强制会话初始化（每次必须先执行）
 
 ```
-用户输入
-  ↓
-┌─────────────────────────────────────┐
-│ 第1步：项目上下文检测                │
-├─────────────────────────────────────┤
-│  • 检测语言/框架                     │
-│  • 检测 Axiom（.agent/）             │
-│  • 读取 Axiom 记忆（如有）           │
-└─────────────────────────────────────┘
-  ↓
-┌─────────────────────────────────────┐
-│ 第2步：复杂度评估                    │
-├─────────────────────────────────────┤
-│  🟢 简单 → 直接实现                  │
-│  🟡 中等 → Agent 协助                │
-│  🔴 复杂 →                           │
-│      ├─ 有 Axiom → 建议 /start       │
-│      └─ 无 Axiom → Planner Agent     │
-└─────────────────────────────────────┘
-  ↓
-┌─────────────────────────────────────┐
-│ 第3步：插件匹配                      │
-├─────────────────────────────────────┤
-│  • 检测关键词                        │
-│  • 加载匹配插件                      │
-│  • 对齐项目现有风格（优先于插件默认） │
-└─────────────────────────────────────┘
-  ↓
-┌─────────────────────────────────────┐
-│ 第4步：执行任务                      │
-├─────────────────────────────────────┤
-│  • 调用 Agent（如需）                │
-│  • 生成代码                          │
-│  • 运行测试                          │
-│  • 代码审查                          │
-└─────────────────────────────────────┘
-  ↓
-┌─────────────────────────────────────┐
-│ 第5步：知识进化（如有 Axiom）        │
-├─────────────────────────────────────┤
-│  • 更新项目记忆                      │
-│  • 记录新模式                        │
-│  • 提取经验教训                      │
-└─────────────────────────────────────┘
-```
+每次执行 /aimax:auto 前，必须完成以下检测：
 
-## 与 Axiom 的协作
+1. 读取 CLAUDE.md（如存在）→ 加载项目规范、禁止事项、响应格式
+2. 读取 REPO_MAP.md（如存在）→ 加载仓库符号地图，快速定位代码
+3. 读取 .claude/rules/ 目录 → 加载适用规则（java-coding-style/security等）
+4. 检测技术栈（详见下方语言/框架检测表）
+5. 记录 session_context：{task_type, complexity, files_to_modify}
 
-### /aimax:auto 检测到复杂任务时
-
-```markdown
-## 复杂任务建议
-
-当 /aimax:auto 检测到复杂任务（>120分钟）且项目有 Axiom 时：
-
-1. 显示建议：
-   "检测到复杂任务，建议使用 Axiom /start 工作流"
-   "是否切换到 /start？(y/n)"
-
-2. 用户确认后：
-   - 切换到 /start 工作流
-   - Axiom 负责整体流程
-   - /aimax:auto 负责具体编码
-
-3. 用户拒绝：
-   - 使用 Planner Agent + 多 Agent 协作
-   - 保持 /aimax:auto 流程
-```
-
-### Axiom 调用 /aimax:auto
-
-```markdown
-## Axiom 工作流中的 /aimax:auto
-
-在 Axiom 的编码实现阶段：
-
-1. Axiom 调用 /aimax:auto 执行具体编码
-2. /aimax:auto 读取 Axiom 记忆中的项目规范
-3. /aimax:auto 生成符合规范的代码
-4. Axiom 更新记忆
-
-形成闭环：
-Axiom → /aimax:auto → 代码 → Axiom 记忆 → /aimax:auto
-```
-
-## 项目上下文检测
-
-### 语言检测
-
-| 语言 | 检测文件 |
-|------|---------|
-| JavaScript/TypeScript | package.json |
-| Python | requirements.txt, pyproject.toml |
-| Java | pom.xml, build.gradle |
-| Go | go.mod |
-| Rust | Cargo.toml |
-
-### 框架检测
-
-| 框架 | 检测特征 |
-|------|---------|
-| React | package.json 有 "react" |
-| Vue | package.json 有 "vue" |
-| Angular | package.json 有 "@angular" |
-| Spring | pom.xml 有 "spring-boot" |
-| Django | requirements.txt 有 "django" |
-| FastAPI | requirements.txt 有 "fastapi" |
-| Gin | go.mod 有 "github.com/gin-gonic/gin" |
-
-### Axiom 检测
-
-| 检测项 | 路径 |
-|--------|------|
-| Axiom 工作流 | `.agent/workflows/start.md` |
-| 长期记忆 | `.agent/memory/project_decisions.md` |
-| 编码模式 | `.agent/memory/coding_patterns.md` |
-| 经验教训 | `.agent/memory/lessons_learned.md` |
-
-## 输出格式
-
-### 任务分析输出
-
-```markdown
-📊 任务分析
-
-🎯 **复杂度**: 🟡 中等（预计 45 分钟）
-📝 **语言**: Java + Spring Boot
-🔌 **插件**: spring-helper
-🤖 **Agent**: tdd-guide → code-reviewer
-
-📋 **执行计划**:
-1. 使用 TDD 流程实现功能
-2. 生成单元测试
-3. 代码审查
-
-⏳ 开始执行...
-```
-
-### 复杂任务建议
-
-```markdown
-⚠️ 检测到复杂任务
-
-🎯 **复杂度**: 🔴 复杂（预计 >120 分钟）
-📝 **建议**: 使用 Axiom /start 工作流
-
-Axiom 提供完整的复杂任务处理流程：
-- 需求分析
-- 架构设计
-- 编码实现
-- 代码审查
-- 知识进化
-
-是否切换到 /start？(y/n)
+⚠️ 如果文件数量 > 50 且不存在 REPO_MAP.md：
+   → 建议用户先运行 /aimax:update-codemaps 生成符号地图
 ```
 
 ---
 
-**核心原则**：
-1. **智能检测** - 自动识别项目上下文
-2. **Axiom 优先** - 复杂任务建议使用 Axiom
-3. **项目优先** - 先遵循项目现有代码风格，再用插件兜底
-4. **Agent 协作** - 智能调度专业化 Agent
-5. **插件扩展** - 自动加载匹配插件
+## 📊 步骤1：任务复杂度评估
+
+| 级别 | 预估 | 关键词信号 | 路由策略 |
+|------|------|-----------|---------|
+| 🟢 **简单** | <30分钟 | 修复、函数、方法、变量、样式 | 直接实现 |
+| 🟡 **中等** | 30-120分钟 | 模块、接口、API、组件、服务 | TDD + 代码审查 + Focus Chain |
+| 🔴 **复杂** | >120分钟 | 系统、架构、重构、迁移、微服务 | → 建议 `/aimax:deep-plan` 两阶段规划 |
+
+**复杂度修正规则：**
+- 有外部 API 调用 → +1 级
+- 有数据库 Schema 变更 → +1 级
+- 跨 5 个以上文件 → 提升至复杂
+
+---
+
+## ⛓️ 步骤2：能力链（单一职责，去重分层）
+
+**每个业务域只有一条能力链：命令 → Agent → Skill**
+
+```
+功能开发:    /aimax:auto → tdd-guide(Agent) → tdd-workflow(Skill) + superpowers(触发)
+代码审查:    /aimax:code-review → code-reviewer(Agent) → pr-review-toolkit(触发)
+重构清理:    /aimax:refactor-clean → refactor-cleaner(Agent) → code-simplifier(触发)
+安全审计:    /aimax:security-scan → security-reviewer(Agent) → security-review(Skill)
+架构规划:    /aimax:deep-plan → architect(Agent) + planner(Agent)
+文档更新:    /aimax:update-docs → doc-updater(Agent)
+E2E测试:     /aimax:e2e → e2e-runner(Agent)
+构建修复:    /aimax:build-fix → build-error-resolver(Agent)
+持续演进:    /aimax:evolve → adaptive-evolution(触发) → evaluate → iterate
+任务编排:    /aimax:loop → task-state-machine(触发) → checkpoint → resume
+
+⚠️ 去重原则：
+  - Agent 是执行者，读 Skill 获取知识（Skill 内容不在插件中重复）
+  - 插件只做关键词触发和路由信号，不重复 Skill/Agent 的详细内容
+  - Commands 是用户入口，内部调用对应 Agent
+```
+
+---
+
+## 🔌 步骤3：意图信号路由表
+
+根据用户输入关键词，自动激活对应能力：
+
+| 信号关键词 | 触发能力 | 优先级 |
+|-----------|---------|--------|
+| 功能、特性、模块、实现、新增 | superpowers → TDD流程 | 高 |
+| 组件、界面、UI、页面、样式 | Frontend Design → 视觉规范 | 高 |
+| 清理、重构、简化、代码质量 | code-simplifier → 重构 | 高 |
+| 审查、review、检查、PR | code-reviewer → PR审查 | 高 |
+| 安全、漏洞、扫描、密钥、注入 | security-reviewer → 安全审计 | 🔴紧急 |
+| 可视化、工具、演示、看板 | Playground → HTML生成 | 中 |
+| 浏览器、抓取、爬虫、自动化 | Chrome Automation → Playwright | 中 |
+| 迭代、演进、回归、CI、基准 | adaptive-evolution → 评估门禁 | 中 |
+| 状态机、分步、中断、编排、长任务 | task-state-machine → 检查点 | 中 |
+| 重构、迁移、微服务、架构重设计 | → 建议 `/aimax:deep-plan` | 特殊 |
+| 大型项目、多模块、符号地图 | repo-map skill → 先建地图 | 前置 |
+| 继续上次、对话太长、上下文满 | context-compression → 锚定摘要 | 前置 |
+| 并行、多任务、独立功能 | git-worktree skill → 分支隔离 | 可选 |
+| 省钱、优化成本、批量任务 | cost-optimizer → OpusPlan路由 | 可选 |
+
+---
+
+## 🏗️ 步骤4：框架插件加载
+
+**技术栈检测 → 自动加载对应规范：**
+
+| 检测文件 | 框架 | 加载插件 | 加载规则 |
+|---------|------|---------|---------|
+| `pom.xml` 含 spring-boot | Java/Spring Boot | spring.md | java-coding-style.md |
+| `package.json` 含 react/next | TypeScript/React | react.md | coding-style.md |
+| `requirements.txt` 含 django | Python/Django | django.md | — |
+| `requirements.txt` 含 fastapi | Python/FastAPI | django.md | — |
+| `go.mod` 含 gin | Go/Gin | gin.md | — |
+
+**代码优先原则：** 框架插件提供规范_兜底_，项目现有代码风格优先
+
+---
+
+## 🤖 步骤5：Agent 调度规则
+
+| 任务类型 | Agent 链 | 并行/串行 |
+|---------|---------|---------|
+| 新功能（简单） | tdd-guide | 串行 |
+| 新功能（中等） | planner → tdd-guide → code-reviewer | 串行 |
+| 新功能（复杂） | architect → planner → tdd-guide → code-reviewer | 串行 |
+| Bug 修复 | tdd-guide → code-reviewer | 串行 |
+| 代码重构 | refactor-cleaner → code-reviewer | 串行 |
+| 架构变更 | architect → planner | 串行 |
+| 安全敏感 | +security-reviewer（并行审查） | 并行 |
+| 文档更新 | doc-updater | 独立 |
+| 大型项目 | multi-agent-orchestrator 统筹 | 并行分发 |
+
+---
+
+## ✅ 步骤6：自动化门禁（严格执行，不可跳过）
+
+```
+1. 编译/构建  → 必须0错误
+2. 单元测试   → 必须全部通过
+3. 测试覆盖率 → 必须 >= 80%（Java项目: mvn test; JS: npm test）
+4. 代码规范   → hooks.json 自动检查格式和质量
+5. 安全扫描   → 检测硬编码密钥、SQL拼接、注入风险
+
+任一失败 → 自动重试，最多3次，每次调整策略：
+  第1次失败: 分析错误，调整实现
+  第2次失败: 替代方案
+  第3次失败: 报告给用户，等待干预
+```
+
+---
+
+## 🧠 步骤7：自动经验沉淀（每次任务完成后必须触发，无需关键词）
+
+```
+任务完成后，始终执行：
+
+1. 提取本次编码特征：
+   - 使用了哪些框架模式？
+   - 解决了哪类问题？
+   - 采用了哪种架构决策？
+
+2. 写入 .claude/instincts/（如 continuous-learning skill 已激活）
+   或输出简短总结格式：
+   [Instinct] 任务类型: xxx | 使用模式: xxx | 结果: 成功/失败
+
+3. 如果修改了项目结构（新增模块、改变架构）：
+   → 提示用户运行 /aimax:update-codemaps 更新 REPO_MAP.md
+
+4. 如果生产环境相关（发布、部署）：
+   → 自动触发 /aimax:security-scan 安全审计
+```
+
+---
+
+## 🔄 完整闭环图
+
+```
+用户输入
+    ↓
+[步骤0] 会话初始化 (CLAUDE.md + REPO_MAP.md + rules)
+    ↓
+[步骤1] 复杂度评估 (简单/中等/复杂)
+    ↓
+[步骤2] 能力链选择 (命令→Agent→Skill)
+    ↓
+[步骤3] 意图信号→插件触发
+    ↓
+[步骤4] 框架插件加载 (Spring/React/Django/Gin)
+    ↓
+[步骤5] Agent 调度执行
+    ↓
+[步骤6] 自动化门禁 (编译+测试+安全)
+    ↓
+[步骤7] 经验沉淀 (始终自动触发)
+    ↓
+输出完成
+```
+
+---
+
+**核心原则：**
+1. **单一大脑** — 路由逻辑只在此文件，不分散
+2. **分层清晰** — 触发(插件) → 决策(Agent) → 知识(Skill)
+3. **闭环自动** — 每次完成都沉淀经验，无需用户触发
+4. **项目优先** — 现有代码风格 > 插件规范 > 框架默认
+5. **门禁严格** — 没有通过测试的代码不交付
