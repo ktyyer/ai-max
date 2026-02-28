@@ -75,7 +75,7 @@ E2E测试:     /aimax:e2e → e2e-runner(Agent)
 
 | 信号关键词 | 触发能力 | 优先级 |
 |-----------|---------|--------|
-| 功能、特性、模块、实现、新增 | superpowers → TDD流程 | 高 |
+| 功能、特性、模块、实现、新增 | superpowers → TDD流程 + tdd-templates | 高 |
 | 组件、界面、UI、页面、样式 | Frontend Design → 视觉规范 | 高 |
 | 清理、重构、简化、代码质量 | code-simplifier → 重构 | 高 |
 | 审查、review、检查、PR | code-reviewer → PR审查 | 高 |
@@ -84,15 +84,27 @@ E2E测试:     /aimax:e2e → e2e-runner(Agent)
 | 浏览器、抓取、爬虫、自动化 | Chrome Automation → Playwright | 中 |
 | 迭代、演进、回归、CI、基准 | adaptive-evolution → 评估门禁 | 中 |
 | 状态机、分步、中断、编排、长任务 | task-state-machine → 检查点 | 中 |
+| E2E、端到端、UI测试、集成测试 | e2e-runner → Playwright/Cypress | 中 |
+| 构建失败、编译错误、依赖错误 | build-error-resolver → 构建修复 | 高 |
 | 重构、迁移、微服务、架构重设计 | → 建议 `/aimax:deep-plan` | 特殊 |
 | 大型项目、多模块、符号地图 | repo-map skill → 先建地图 | 前置 |
 | 继续上次、对话太长、上下文满 | context-compression → 锚定摘要 | 前置 |
 | 并行、多任务、独立功能 | git-worktree skill → 分支隔离 | 可选 |
 | 省钱、优化成本、批量任务 | cost-optimizer → OpusPlan路由 | 可选 |
 
+### 🧠 技能主动判断规则（无需关键词，自动检测条件触发）
+
+| 条件检测 | 自动激活技能 |
+|---------|------------|
+| 当前对话轮次 > 15 或上下文 > 70% | **context-compression** — 自动锚定摘要 |
+| 项目文件数 > 50 且无 REPO_MAP.md | **repo-map** — 建议先生成符号地图 |
+| 任务复杂度=复杂 且有多个独立子模块 | **git-worktree** — 提示并行 worktree 隔离 |
+| 任务使用 Opus 且预估 > 3000 tokens | **cost-optimizer** — 自动降级到 Sonnet 执行 |
+| 复杂度 ≥ 中等（始终触发） | **focus-chain** — 强制开启专注保持模式 |
+
 ---
 
-## 🏗️ 步骤4：框架插件加载
+## 🏗️ 步骤4：框架插件 + 规则自动加载
 
 **技术栈检测 → 自动加载对应规范：**
 
@@ -104,7 +116,19 @@ E2E测试:     /aimax:e2e → e2e-runner(Agent)
 | `requirements.txt` 含 fastapi | Python/FastAPI | django.md | — |
 | `go.mod` 含 gin | Go/Gin | gin.md | — |
 
-**代码优先原则：** 框架插件提供规范_兜底_，项目现有代码风格优先
+**始终自动加载的通用规则（所有项目）：**
+
+| 规则文件 | 何时激活 | 内容 |
+|---------|---------|------|
+| `rules/security.md` | **始终加载** | 密钥/注入/XSS 安全基线 |
+| `rules/testing.md` | **始终加载** | 测试策略、覆盖率标准 |
+| `rules/patterns.md` | **始终加载** | 代码组织模式、设计模式 |
+| `rules/performance.md` | 中等/复杂任务 | N+1/内存泄漏/缓存规范 |
+| `rules/git-workflow.md` | 涉及提交/分支时 | 提交规范、分支策略 |
+| `rules/agents.md` | 多 Agent 调度时 | Agent 协作协议 |
+| `rules/hooks.md` | 代码变更后 | PostToolUse 自动检查 |
+
+**代码优先原则：** 项目现有代码风格 > 框架插件规范 > 通用规则默认值
 
 ---
 
@@ -120,6 +144,8 @@ E2E测试:     /aimax:e2e → e2e-runner(Agent)
 | 架构变更 | architect → planner | 串行 |
 | 安全敏感 | +security-reviewer（并行审查） | 并行 |
 | 文档更新 | doc-updater | 独立 |
+| E2E测试 | e2e-runner | 独立 |
+| 构建错误 | build-error-resolver | 独立 |
 | 大型项目 | multi-agent-orchestrator 统筹 | 并行分发 |
 
 ---
